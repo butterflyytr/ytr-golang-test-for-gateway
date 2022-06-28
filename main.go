@@ -38,9 +38,9 @@ func handler(ctx context.Context, r *events.HTTPRequest) (*events.EventResponse,
 	ret["http_query"] = query
 	ret["http_header"] = header
 	ret["http_body"] = string(r.Body)
-	openapi_url, openapi_body := AccessOpenApi()
-	ret["openapi_body"] = openapi_body
-	ret["openapi_url"] = openapi_url
+	//openapi_url, openapi_body := AccessOpenApi()
+	//ret["openapi_body"] = openapi_body
+	//ret["openapi_url"] = openapi_url
 	retBody, _ := json.Marshal(ret)
 	return &events.EventResponse{
 		Headers: map[string]string{
