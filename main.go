@@ -38,8 +38,9 @@ func handler(ctx context.Context, r *events.HTTPRequest) (*events.EventResponse,
 	ret["http_query"] = query
 	ret["http_header"] = header
 	ret["http_body"] = string(r.Body)
-	openapi_body := AccessOpenApi()
+	openapi_url, openapi_body := AccessOpenApi()
 	ret["openapi_body"] = openapi_body
+	ret["openapi_url"] = openapi_url
 	retBody, _ := json.Marshal(ret)
 	return &events.EventResponse{
 		Headers: map[string]string{
@@ -49,7 +50,7 @@ func handler(ctx context.Context, r *events.HTTPRequest) (*events.EventResponse,
 	}, nil
 }
 
-func AccessOpenApi() string {
+func AccessOpenApi() (string, string) {
 
 	//url := "https://developer.toutiao.com/api/apps/qrcode"
 	host := "dev.douyincloud.gateway.egress.ivolces.com"
@@ -64,7 +65,7 @@ func AccessOpenApi() string {
 
 	if err != nil {
 		fmt.Println(err)
-		return ""
+		return "", ""
 	}
 	//req.Header.Add("Content-Type", "application/json")
 	req.Header.Set("Content-Type", "application/json")
@@ -72,17 +73,17 @@ func AccessOpenApi() string {
 	res, err := client.Do(req)
 	if err != nil {
 		fmt.Println(err)
-		return ""
+		return "", ""
 	}
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		fmt.Println(err)
-		return ""
+		return "", ""
 	}
 	resheader := res.Header
 	log.Printf("ytr test raw request:%+v\n\n", req)
 	log.Printf("ytr test resp from openapi:%+v,%+v\n\n", string(body), resheader)
-	return string(body)
+	return url, string(body)
 }
