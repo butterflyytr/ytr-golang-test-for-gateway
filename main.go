@@ -53,7 +53,8 @@ func handler(ctx context.Context, r *events.HTTPRequest) (*events.EventResponse,
 func AccessOpenApi() (string, string) {
 
 	//url := "https://developer.toutiao.com/api/apps/qrcode"
-	host := "dev.douyincloud.gateway.egress.ivolces.com"
+	//host := "dev.douyincloud.gateway.egress.ivolces.com"
+	host := "douyincloud.gateway.egress.ivolces.com"
 	url := fmt.Sprintf("http://%s/api/v2/tags/text/antidirt", host)
 	method := "POST"
 
