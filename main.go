@@ -38,7 +38,8 @@ func handler(ctx context.Context, r *events.HTTPRequest) (*events.EventResponse,
 	ret["http_query"] = query
 	ret["http_header"] = header
 	ret["http_body"] = string(r.Body)
-	openapi_url, openapi_body := AccessOpenApi()
+	//openapi_url, openapi_body := AccessOpenApi()
+	openapi_url, openapi_body := AccessOpenApi2()
 	ret["openapi_body"] = openapi_body
 	ret["openapi_url"] = openapi_url
 	retBody, _ := json.Marshal(ret)
@@ -62,6 +63,47 @@ func AccessOpenApi() (string, string) {
 
 	//payload := strings.NewReader(`{"access_token": "0801121846765a5a4d2f6b385a68307237534d43397a667865513d3d","appname": "douyin"}`)
 	payloadWithoutToken := strings.NewReader(`{"tasks": [{"content": "要检测的文本"}]}`)
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, payloadWithoutToken)
+
+	if err != nil {
+		fmt.Println(err)
+		return "", ""
+	}
+	//req.Header.Add("Content-Type", "application/json")
+	req.Header.Set("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return "", ""
+	}
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return "", ""
+	}
+	resheader := res.Header
+	log.Printf("ytr test raw request:%+v\n\n", req)
+	log.Printf("ytr test resp from openapi:%+v,%+v\n\n", string(body), resheader)
+	return url, string(body)
+}
+
+func AccessOpenApi2() (string, string) {
+
+	//url := "https://developer.toutiao.com/api/apps/qrcode"
+	//host := "dev.douyincloud.gateway.egress.ivolces.com"
+	//host := "douyincloud.gateway.egress.ivolces.com"
+	host := "developer.toutiao.com"
+
+	url := fmt.Sprintf("http://%s/api/apps/qrcode", host)
+	method := "POST"
+
+	//payload := strings.NewReader(`{"access_token": "0801121846765a5a4d2f6b385a68307237534d43397a667865513d3d","appname": "douyin"}`)
+	payloadWithoutToken := strings.NewReader(`{"appname": "douyin"}`)
 
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, payloadWithoutToken)
