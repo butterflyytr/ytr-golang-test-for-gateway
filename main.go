@@ -143,7 +143,7 @@ func AccessOpenApi3() (string, string) {
 	host := "developer.toutiao.com"
 	//url=http://developer-boe.toutiao.com/api/apps/customer_service/url?appid=ttded7a86a41b127b6&access_token=080112184676786c51723461725a346f4e536d342f5242544b673d3d&openid=76f096e2-47c8-4473-8621-71ee839f6378&type=1128&scene=1
 
-	url := fmt.Sprintf("http://%s/api/apps/customer_service/url?appid=tt1782613f88e45ec801&openid=76f096e2-47c8-4473-8621-71ee839f6378&type=1128&scene=1", host)
+	url := fmt.Sprintf("http://%s/api/apps/customer_service/url?appid=ttd01ba6a64f25f03901&openid=76f096e2-47c8-4473-8621-71ee839f6378&type=1128&scene=1", host)
 	method := "GET"
 
 	//payload := strings.NewReader(`{"access_token": "0801121846765a5a4d2f6b385a68307237534d43397a667865513d3d","appname": "douyin"}`)
